@@ -2,6 +2,7 @@ import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BoardService } from '../../services/board';
+import { AuthService } from '../../services/auth';
 import { BoardDTO } from '../../models/board.model';
 import { SidebarComponent } from '../dashcomponents/sidebar/sidebar';
 import { TopbarComponent } from '../dashcomponents/topbar/topbar';
@@ -27,6 +28,8 @@ import { BoardModalsComponent } from '../dashcomponents/board-modals/board-modal
 export class Dashboard implements OnInit {
 
   private boardService = inject(BoardService);
+  private authService = inject(AuthService);
+  userRole = this.authService.getCurrentUserRole();
   private boardsSignal = signal<BoardDTO[]>([]);
 
   searchTerm = '';
