@@ -4,20 +4,14 @@ import com.example.collab.dtos.BoardDTO;
 import com.example.collab.exceptions.BoardException;
 import com.example.collab.exceptions.WorkspaceException;
 import com.example.collab.services.BoardService;
-import com.example.collab.services.BoardServiceImpl;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin("*")
 
-@Transactional
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
-
 public class BoardController {
 
     private BoardService boardService;

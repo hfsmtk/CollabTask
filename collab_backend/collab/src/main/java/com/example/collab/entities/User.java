@@ -22,9 +22,8 @@ public class User {
     private Long id ;
     private String name ;
     @Email
-    //@Column(unique = true , nullable = false)
+    @Column(unique = true, nullable = false)
     private String email ;
-    //@Column(unique = true , nullable = false)
 
     private String password ;
     private String avatarUrl ;

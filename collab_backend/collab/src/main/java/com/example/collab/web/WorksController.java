@@ -6,13 +6,11 @@ import com.example.collab.enums.WorkspaceRole;
 import com.example.collab.exceptions.UserNotFoundException;
 import com.example.collab.exceptions.WorkspaceException;
 import com.example.collab.services.WorkspaceMemberService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Transactional
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")

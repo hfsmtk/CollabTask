@@ -12,5 +12,6 @@ public class AuthResponse {
     private String name;
     private String email;
     private Long workspaceId;
+    private String role;
 
 }
