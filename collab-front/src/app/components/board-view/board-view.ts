@@ -8,6 +8,10 @@ import { CommentService } from '../../services/comment';
 import { AuthService } from '../../services/auth';
 import { NotificationsService } from '../../services/notifications';
 import { LabelService } from '../../services/label';
+ feature/auth-roles
+
+import { AiService } from '../../services/ai';
+ develop
 import { BoardDTO } from '../../models/board.model';
 import { TaskColumnDTO } from '../../models/taskColumn.model';
 import { TaskDTO } from '../../models/task.model';
@@ -34,6 +38,10 @@ export class BoardView implements OnInit {
   private notificationsService = inject(NotificationsService);
   private workspaceService = inject(WorkspaceService);
   private labelService = inject(LabelService);
+ feature/auth-roles
+
+  private aiService = inject(AiService);
+ develop
 
   currentUserInitial = (this.authService.getCurrentUserName() || 'U')[0].toUpperCase();
 
@@ -72,6 +80,10 @@ export class BoardView implements OnInit {
   modalAssigneeId = signal<number | null>(null);
   newCommentContent = signal('');
   modalDirty = signal(false);
+ feature/auth-roles
+
+  isGeneratingDescription = signal(false);
+develop
   modalDueDate = signal('');
   workspaceLabels = signal<LabelDTO[]>([]);
   showLabelPicker = signal<boolean>(false);
@@ -310,6 +322,10 @@ readonly memberColors = [
     this.modalAssigneeId.set(task.assigneeId ?? null);
     this.newCommentContent.set('');
     this.modalDirty.set(false);
+
+    this.aiError.set('');
+    this.isGeneratingDescription.set(false);
+ develop
     this.modalDueDate.set(task.dueDate || '');
     this.taskComments.set([]);
     this.commentService.getCommentsByTask(task.id!).subscribe({
@@ -345,10 +361,45 @@ readonly memberColors = [
     });
   }
 
+ feature/auth-roles
+
+  generateDescriptionWithAi() {
+    const title = this.modalTitle().trim();
+    if (!title || this.isGeneratingDescription()) return;
+
+    this.aiError.set('');
+    this.isGeneratingDescription.set(true);
+
+    this.aiService.generateDescription({ title }).subscribe({
+      next: (response) => {
+        const description = response.description?.trim();
+        if (!description) {
+          this.aiError.set('Aucune description n\u0027a ete generee.');
+          return;
+        }
+        this.modalDesc.set(description);
+        this.modalDirty.set(true);
+      },
+      error: (err) => {
+        console.error('Erreur generation description IA', err);
+        const message = err?.error?.message || err?.message || 'Impossible de generer la description pour le moment.';
+        this.aiError.set(message);
+        this.isGeneratingDescription.set(false);
+      },
+      complete: () => this.isGeneratingDescription.set(false)
+    });
+  }
+
+ develop
   closeTaskModal() {
     this.selectedTask.set(null);
     this.taskComments.set([]);
     this.modalDirty.set(false);
+ feature/auth-roles
+
+    this.aiError.set('');
+    this.isGeneratingDescription.set(false);
+ develop
   }
 
   addComment() {
