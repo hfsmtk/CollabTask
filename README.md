@@ -143,9 +143,10 @@ Sépare la logique d'accès aux données de la logique métier, permettant un co
 
 | Membre | Rôle |
 |--------|------|
-| Hamid | Workflow & Release Manager |
-| [Feature Dev] | Feature & AI Lead |
-| [Quality Dev] | Quality & Refactoring Lead |
+| Mottaki Hafsa | Projet Manager |
+| MAMOUDOU Hamid | Workflow & Release Manager |
+| Louleb Ayoub | Feature & AI Lead |
+| Ouaddous Wissal | Quality & Refactoring Lead |
 | Aymen Karkouri Idrissi | Business & Documentation Lead |
 
 ---
