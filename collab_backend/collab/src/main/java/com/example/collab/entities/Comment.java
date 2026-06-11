@@ -7,26 +7,31 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
+/**
+ * Entité représentant un commentaire posté sur une tâche.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name ="comments")
+@Table(name = "comments")
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String content ;
+    private Long id;
+
+    private String content;
+
     @CreationTimestamp
-    private LocalDateTime createdAt ;
+    private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "task_id" , nullable = false)
-    private Task task ;
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task task;
 
     @ManyToOne
-    @JoinColumn(name = "author_id" , nullable = false)
-    private User author ;
-
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 }

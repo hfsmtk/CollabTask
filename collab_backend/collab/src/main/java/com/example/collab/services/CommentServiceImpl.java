@@ -17,70 +17,74 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/** Implémentation de {@link CommentService}. */
 @Service
 @Transactional
 @AllArgsConstructor
+public class CommentServiceImpl implements CommentService {
 
-public class CommentServiceImpl implements CommentService{
-
-    private CommentMappers dtoMapper ;
+    private CommentMappers dtoMapper;
     private TaskRepository taskRepository;
     private UserRepository userRepository;
     private CommentRepository commentRepository;
-
 
     @Override
     public CommentDTO saveComment(CommentDTO commentDTO) throws TaskException, UserNotFoundException {
         Comment comment = dtoMapper.commentDTOToComment(commentDTO);
 
-        if(commentDTO.getTaskId() != null){
-            Task task = taskRepository.findById(commentDTO.getTaskId()).orElseThrow(()-> new TaskException("Task not found"));
+        if (commentDTO.getTaskId() != null) {
+            Task task = taskRepository.findById(commentDTO.getTaskId())
+                    .orElseThrow(() -> new TaskException("Task not found"));
             comment.setTask(task);
         }
 
-        if(commentDTO.getAuthorId() != null){
-            User author = userRepository.findById(commentDTO.getAuthorId()).orElseThrow(()-> new UserNotFoundException("User not found"));
+        if (commentDTO.getAuthorId() != null) {
+            User author = userRepository.findById(commentDTO.getAuthorId())
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
             comment.setAuthor(author);
         }
-        Comment savedComment = commentRepository.save(comment);
-        return dtoMapper.commentToCommentDTO(savedComment);
+
+        return dtoMapper.commentToCommentDTO(commentRepository.save(comment));
     }
 
     @Override
     public CommentDTO updateComment(Long id, CommentDTO commentDTO) throws CommentException, UserNotFoundException, TaskException {
-        Comment comment = commentRepository.findById(id).orElseThrow(()-> new CommentException("Comment not found !"));
-
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new CommentException("Comment not found !"));
         comment.setContent(commentDTO.getContent());
-
-        Comment  updatedComment = commentRepository.save(comment);
-        return dtoMapper.commentToCommentDTO(updatedComment);
+        return dtoMapper.commentToCommentDTO(commentRepository.save(comment));
     }
 
     @Override
     public CommentDTO deleteComment(Long id) throws CommentException, UserNotFoundException, TaskException {
-        Comment comment = commentRepository.findById(id).orElseThrow(()-> new CommentException("Comment not found !"));
-
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new CommentException("Comment not found !"));
         commentRepository.delete(comment);
-
         return dtoMapper.commentToCommentDTO(comment);
     }
 
     @Override
     public CommentDTO getComment(Long id) throws UserNotFoundException, TaskException, CommentException {
-        Comment comment = commentRepository.findById(id).orElseThrow(()-> new CommentException("Comment not found !"));
-
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new CommentException("Comment not found !"));
         return dtoMapper.commentToCommentDTO(comment);
     }
 
     @Override
     public List<CommentDTO> getCommentByUser(Long userId) throws UserNotFoundException {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User Not found !"));
-        return user.getComments().stream().map(dtoMapper::commentToCommentDTO).toList();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found !"));
+        return user.getComments().stream()
+                .map(dtoMapper::commentToCommentDTO)
+                .toList();
     }
 
     @Override
     public List<CommentDTO> getCommentsByTask(Long taskId) throws UserNotFoundException {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found !"));
-        return task.getComments().stream().map(dtoMapper::commentToCommentDTO).toList();
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found !"));
+        return task.getComments().stream()
+                .map(dtoMapper::commentToCommentDTO)
+                .toList();
     }
 }

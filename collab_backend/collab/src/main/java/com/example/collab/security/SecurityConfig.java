@@ -18,6 +18,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Configuration Spring Security de l'application.
+ * <ul>
+ *   <li>Politique stateless (JWT, pas de sessions HTTP)</li>
+ *   <li>CSRF désactivé (API REST)</li>
+ *   <li>CORS global configuré via {@link #corsConfigurationSource()}</li>
+ *   <li>{@link JwtFilter} inséré avant le filtre d'authentification par défaut</li>
+ * </ul>
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor

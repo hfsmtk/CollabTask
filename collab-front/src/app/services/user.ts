@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { UserDTO } from '../models/user.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour la gestion des utilisateurs (CRUD + recherche). */
 @Injectable({
   providedIn: 'root',
 })

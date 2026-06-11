@@ -12,6 +12,10 @@ import { NotificationDTO } from '../../models/notification.model';
 import { UserDTO } from '../../models/user.model';
 import { UserService } from '../../services/user';
 
+/**
+ * Page listant tous les boards de l'utilisateur, organisés par workspace.
+ * Permet la création, suppression et gestion des membres d'un workspace.
+ */
 @Component({
   selector: 'app-boards-page',
   imports: [RouterLink, FormsModule, DatePipe],

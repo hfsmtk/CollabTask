@@ -5,6 +5,7 @@ import com.example.collab.entities.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/** Convertit entre {@link com.example.collab.entities.User} et {@link com.example.collab.dtos.UserDTO}. */
 @Service
 public class UserMappers {
 

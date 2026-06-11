@@ -4,6 +4,7 @@ import { CommentDTO } from '../models/comment.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour la gestion des commentaires de tâches. */
 @Injectable({
   providedIn: 'root',
 })

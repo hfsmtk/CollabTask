@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
+/**
+ * Gestionnaire global d'exceptions pour tous les contrôleurs REST.
+ * Traduit chaque exception métier en une réponse HTTP avec le code de statut approprié
+ * et un corps JSON {@code {"message": "..."}} pour faciliter la gestion côté client.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

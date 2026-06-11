@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Table de liaison entre un utilisateur et un workspace.
+ * Porte le rôle de l'utilisateur dans ce workspace (OWNER, ADMIN, MEMBER, VIEWER).
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,15 +22,14 @@ public class WorkspaceMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "workspace_id" , nullable = false)
-    private Workspace workspace ;
+    @JoinColumn(name = "workspace_id", nullable = false)
+    private Workspace workspace;
 
     @ManyToOne
-    @JoinColumn(name = "user_id" ,nullable = false)
-    private User user ;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private WorkspaceRole role ;
-
+    private WorkspaceRole role;
 }

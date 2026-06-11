@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth';
 
+/** Page d'inscription. Crée un compte utilisateur et redirige vers le dashboard. */
 @Component({
   selector: 'app-register',
   standalone: true,

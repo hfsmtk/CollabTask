@@ -6,6 +6,7 @@ import { AuthService } from '../../../services/auth';
 import { NotificationsService } from '../../../services/notifications';
 import { NotificationDTO } from '../../../models/notification.model';
 
+/** Barre supérieure du dashboard : date, recherche, tri et notifications. */
 @Component({
   selector: 'app-topbar',
   standalone: true,

@@ -5,6 +5,7 @@ import { UserService } from '../../services/user';
 import { AuthService } from '../../services/auth';
 import { UserDTO } from '../../models/user.model';
 
+/** Page de profil utilisateur : affichage et modification des informations du compte. */
 @Component({
   selector: 'app-profile-page',
   imports: [RouterLink, FormsModule],

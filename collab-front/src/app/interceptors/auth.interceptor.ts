@@ -1,8 +1,13 @@
- import { HttpInterceptorFn } from '@angular/common/http';
-  import { inject } from '@angular/core';
-  import { AuthService } from '../services/auth';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth';
 
-  export const authInterceptor: HttpInterceptorFn = (req, next) => {
+/**
+ * Intercepteur HTTP fonctionnel Angular.
+ * Ajoute automatiquement le header `Authorization: Bearer <token>` à toutes les requêtes
+ * sortantes si un token JWT est présent en session.
+ */
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     const authService = inject(AuthService);
     const token = authService.getToken();

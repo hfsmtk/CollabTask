@@ -1,5 +1,6 @@
 import { LabelDTO } from './label.model';
 
+/** Modèle de données pour une tâche. */
 export interface TaskDTO {
   id?: number;
   title: string;

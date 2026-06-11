@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { TaskDTO } from '../models/task.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour les opérations CRUD et le déplacement des tâches entre colonnes. */
 @Injectable({
   providedIn: 'root',
 })

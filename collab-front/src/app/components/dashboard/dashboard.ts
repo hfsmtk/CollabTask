@@ -10,6 +10,11 @@ import { StatsCardsComponent } from '../dashcomponents/stats-cards/stats-cards';
 import { BoardGridComponent } from '../dashcomponents/board-grid/board-grid';
 import { BoardModalsComponent } from '../dashcomponents/board-modals/board-modals';
 
+/**
+ * Tableau de bord principal de l'application.
+ * Agrège les boards de l'utilisateur et les affiche via des sous-composants
+ * (sidebar, topbar, stats, grille de boards, modals).
+ */
 @Component({
   selector: 'app-dashboard',
   standalone: true,

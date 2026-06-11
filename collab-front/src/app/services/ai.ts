@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AiRequest, AiResponse } from '../models/ai.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour la génération de descriptions de tâches via l'API IA (Groq). */
 @Injectable({
   providedIn: 'root'
 })

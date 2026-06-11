@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des commentaires sur les tâches. */
 @CrossOrigin("*")
-
-
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

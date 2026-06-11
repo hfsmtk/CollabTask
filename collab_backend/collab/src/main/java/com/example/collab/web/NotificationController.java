@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la consultation et la création de notifications. */
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("*")

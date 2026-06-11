@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BoardDTO } from '../../../models/board.model';
 
+/** Modals du dashboard pour la création, l'édition et la suppression de boards. */
 @Component({
   selector: 'app-board-modals',
   standalone: true,

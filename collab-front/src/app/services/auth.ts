@@ -13,6 +13,10 @@ interface AuthResponse {
   role?: string;
 }
 
+/**
+ * Service d'authentification.
+ * Gère l'inscription, la connexion, la déconnexion et la session (token + infos utilisateur dans localStorage).
+ */
 @Injectable({
   providedIn: 'root',
 })

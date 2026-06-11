@@ -5,6 +5,7 @@ import com.example.collab.entities.Workspace;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/** Convertit entre {@link com.example.collab.entities.Workspace} et {@link com.example.collab.dtos.WorkspaceDTO}. */
 @Service
 public class WorkspaceMappers {
 

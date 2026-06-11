@@ -17,13 +17,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implémentation de {@link TaskService}.
+ * La gestion de la position lors d'un déplacement de tâche garantit
+ * que la tâche est toujours insérée en fin de liste dans la colonne cible.
+ */
 @Service
 @Transactional
 @AllArgsConstructor
-
 public class TaskServiceImpl implements TaskService {
 
-    private TaskMappers dtoMapper ;
+    private TaskMappers dtoMapper;
     private TaskRepository taskRepository;
     private TaskColumnRepository taskColumnRepository;
     private UserRepository userRepository;
@@ -33,13 +37,16 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO saveTask(TaskDTO taskDTO) throws TaskException, UserNotFoundException {
         Task task = dtoMapper.taskDTOToTask(taskDTO);
 
-        TaskColumn taskColumn = taskColumnRepository.findById(taskDTO.getTaskColumnId()).orElseThrow(()->new TaskException("TaskColumn not found"));
+        TaskColumn taskColumn = taskColumnRepository.findById(taskDTO.getTaskColumnId())
+                .orElseThrow(() -> new TaskException("TaskColumn not found"));
         task.setTaskColumn(taskColumn);
 
         if (taskDTO.getAssigneeId() != null) {
             User assignee = userRepository.findById(taskDTO.getAssigneeId())
-                    .orElseThrow(() -> new UserNotFoundException("User not found ! "));
+                    .orElseThrow(() -> new UserNotFoundException("User not found !"));
             task.setAssignee(assignee);
+            taskRepository.save(task);
+
             Long boardId = taskColumn.getBoard() != null ? taskColumn.getBoard().getId() : null;
             notificationService.createNotification(
                     assignee.getId(),
@@ -48,27 +55,31 @@ public class TaskServiceImpl implements TaskService {
                     task.getId(),
                     boardId
             );
+        } else {
+            taskRepository.save(task);
         }
-        taskRepository.save(task);
+
         return dtoMapper.taskToTaskDTO(task);
     }
 
     @Override
     public TaskDTO getTaskById(Long id) throws TaskException {
-        Task task = taskRepository.findById(id).orElseThrow(()-> new TaskException("Task not found !"));
-
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskException("Task not found !"));
         return dtoMapper.taskToTaskDTO(task);
     }
 
     @Override
     public TaskDTO getTaskByTitle(String title) throws TaskException {
-        Task task = taskRepository.findByTitle(title).orElseThrow(() -> new TaskException("Task not found"));
+        Task task = taskRepository.findByTitle(title)
+                .orElseThrow(() -> new TaskException("Task not found"));
         return dtoMapper.taskToTaskDTO(task);
     }
 
     @Override
     public TaskDTO updateTask(Long id, TaskDTO taskDTO) throws TaskException, UserNotFoundException {
-        Task task = taskRepository.findById(id).orElseThrow(()-> new TaskException("Task not found"));
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskException("Task not found"));
 
         task.setTitle(taskDTO.getTitle());
         task.setDescription(taskDTO.getDescription());
@@ -84,47 +95,43 @@ public class TaskServiceImpl implements TaskService {
             task.setAssignee(null);
         }
 
-        taskRepository.save(task);
-
-        return dtoMapper.taskToTaskDTO(task);
+        return dtoMapper.taskToTaskDTO(taskRepository.save(task));
     }
 
     @Override
     public TaskDTO deleteTask(Long id) throws TaskException {
-        Task task = taskRepository.findById(id).orElseThrow(()-> new TaskException("Task not found"));
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskException("Task not found"));
         taskRepository.delete(task);
-
         return dtoMapper.taskToTaskDTO(task);
     }
 
-//    @Override
-//    public List<TaskDTO> getAllTasks() {
-//        List<Task> tasks = taskRepository.findAll();
-//
-//        return tasks.stream().map(task-> dtoMapper.taskToTaskDTO(task)).toList();
-//    }
-
     @Override
     public List<TaskDTO> getAllTasksByTaskColumn(Long taskColumnId) throws TaskColumnException {
-        TaskColumn taskColumn = taskColumnRepository.findById(taskColumnId).orElseThrow(()-> new TaskColumnException("TaskColumn not found"));
-
-        List<Task> tasks = taskColumn.getTasks();
-        return tasks.stream().map(task-> dtoMapper.taskToTaskDTO(task)).toList();
+        TaskColumn taskColumn = taskColumnRepository.findById(taskColumnId)
+                .orElseThrow(() -> new TaskColumnException("TaskColumn not found"));
+        return taskColumn.getTasks().stream()
+                .map(dtoMapper::taskToTaskDTO)
+                .toList();
     }
 
     @Override
     public List<TaskDTO> getAllTasksByAssignee(Long assigneeId) throws UserNotFoundException {
-        User assignee = userRepository.findById(assigneeId).orElseThrow(()-> new UserNotFoundException("User not found"));
-
-        List<Task> tasks = assignee.getTasks();
-        return tasks.stream().map(task-> dtoMapper.taskToTaskDTO(task)).toList();
+        User assignee = userRepository.findById(assigneeId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        return assignee.getTasks().stream()
+                .map(dtoMapper::taskToTaskDTO)
+                .toList();
     }
 
     @Override
     public TaskDTO moveTask(Long taskId, Long targetColumnId) throws TaskException, TaskColumnException {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskException("Task not found"));
-        TaskColumn taskColumn = taskColumnRepository.findById(targetColumnId).orElseThrow(() -> new TaskColumnException("TaskColumn not found"));
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskException("Task not found"));
+        TaskColumn taskColumn = taskColumnRepository.findById(targetColumnId)
+                .orElseThrow(() -> new TaskColumnException("TaskColumn not found"));
 
+        // La tâche est positionnée après la dernière tâche de la colonne cible
         List<Task> targetTasks = taskRepository.findByTaskColumnIdOrderByPositionAsc(targetColumnId);
         int newPosition = targetTasks.isEmpty() ? 0 : targetTasks.get(targetTasks.size() - 1).getPosition() + 1;
 

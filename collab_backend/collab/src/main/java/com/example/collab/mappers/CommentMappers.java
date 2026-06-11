@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/** Convertit entre {@link com.example.collab.entities.Comment} et {@link com.example.collab.dtos.CommentDTO}. */
 @Service
 @AllArgsConstructor
 public class CommentMappers {

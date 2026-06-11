@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * Contrôleur REST exposant les fonctionnalités d'IA (génération de description de tâche via Groq).
+ * Les erreurs {@link IllegalArgumentException}, {@link IllegalStateException} et {@link RuntimeException}
+ * sont interceptées localement et retournées en 502 Bad Gateway.
+ */
 @RestController
 @RequestMapping("/api/ai")
 @AllArgsConstructor

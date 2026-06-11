@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/** Convertit entre {@link com.example.collab.entities.Notification} et {@link com.example.collab.dtos.NotificationDTO}. */
 @Service
 public class NotificationMappers {
 

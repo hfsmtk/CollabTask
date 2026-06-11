@@ -17,6 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Contrôleur REST gérant l'inscription et la connexion des utilisateurs.
+ * Routes publiques ({@code /auth/**}) — non protégées par le {@link com.example.collab.security.JwtFilter}.
+ * À la connexion et à l'inscription, un workspace par défaut est créé pour l'utilisateur.
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

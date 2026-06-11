@@ -10,34 +10,31 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
+/** Implémentation de {@link UserService}. */
 @Service
 @Transactional
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
-    private UserRepository userRepository;
-    private UserMappers dtoMapper   ;
+public class UserServiceImpl implements UserService {
 
+    private UserRepository userRepository;
+    private UserMappers dtoMapper;
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) throws UserAlreadyExistsException {
-
         if (userDTO.getEmail() == null || userDTO.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("L'email ne peut pas être vide");
         }
-        
         if (userDTO.getName() == null || userDTO.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Le nom ne peut pas être vide");
         }
-
-        if(userRepository.findByEmailOrName(userDTO.getEmail(), userDTO.getName()).isPresent()){
+        if (userRepository.findByEmailOrName(userDTO.getEmail(), userDTO.getName()).isPresent()) {
             throw new UserAlreadyExistsException("Cet email est déjà utilisé !");
         }
-        User saveUser = dtoMapper.userDTOToUser(userDTO);
-        userRepository.save(saveUser);
-        return dtoMapper.userToUserDTO(saveUser) ;
+        User user = dtoMapper.userDTOToUser(userDTO);
+        userRepository.save(user);
+        return dtoMapper.userToUserDTO(user);
     }
 
     @Override
@@ -47,24 +44,20 @@ public class UserServiceImpl implements UserService{
         return dtoMapper.userToUserDTO(user);
     }
 
-
     @Override
     public UserDTO updateUser(Long id, UserDTO userDetails) throws UserNotFoundException {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
         user.setAvatarUrl(userDetails.getAvatarUrl());
-        User updatedUser = userRepository.save(user);
-
-        return dtoMapper.userToUserDTO(updatedUser);
+        return dtoMapper.userToUserDTO(userRepository.save(user));
     }
 
     @Override
     public UserDTO deleteUser(Long id) throws UserNotFoundException {
-        User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         userRepository.delete(user);
         return dtoMapper.userToUserDTO(user);
     }
@@ -72,7 +65,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<UserDTO> searchUser(String email, String name) throws UserNotFoundException {
         List<User> users;
-        
+
         if (email != null && name != null) {
             users = userRepository.findByEmailContainingIgnoreCaseOrNameContainingIgnoreCase(email, name);
         } else if (email != null) {
@@ -82,24 +75,20 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new UserNotFoundException("Veuillez fournir un email ou un nom pour la recherche");
         }
-        
+
         if (users.isEmpty()) {
             throw new UserNotFoundException("Aucun utilisateur trouvé pour les critères spécifiés");
         }
-        
+
         return users.stream()
-                .map(user -> dtoMapper.userToUserDTO(user))
+                .map(dtoMapper::userToUserDTO)
                 .toList();
     }
-
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(user -> dtoMapper.userToUserDTO(user))
+        return userRepository.findAll().stream()
+                .map(dtoMapper::userToUserDTO)
                 .toList();
     }
-
-
 }

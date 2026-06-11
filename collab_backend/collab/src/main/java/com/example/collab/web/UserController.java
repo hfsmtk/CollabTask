@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des utilisateurs (CRUD + recherche). */
 @CrossOrigin("*")
 @Transactional
 @RestController

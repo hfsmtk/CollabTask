@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
+/** DTO de transfert pour une tâche. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class TaskDTO {
 
 

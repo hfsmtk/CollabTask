@@ -5,6 +5,7 @@ import com.example.collab.entities.TaskColumn;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/** Convertit entre {@link com.example.collab.entities.TaskColumn} et {@link com.example.collab.dtos.TaskColumnDTO}. */
 @Service
 public class TaskColumnMappers {
 

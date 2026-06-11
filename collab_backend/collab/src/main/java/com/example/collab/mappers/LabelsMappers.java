@@ -5,6 +5,7 @@ import com.example.collab.entities.Label;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+/** Convertit entre {@link com.example.collab.entities.Label} et {@link com.example.collab.dtos.LabelDTO}. */
 @Component
 public class LabelsMappers {
 

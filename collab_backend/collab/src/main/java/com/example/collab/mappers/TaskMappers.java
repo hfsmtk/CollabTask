@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Convertit entre {@link com.example.collab.entities.Task} et {@link com.example.collab.dtos.TaskDTO}.
+ * Gère la conversion {@link java.time.LocalDateTime} ↔ {@link java.time.LocalDate} pour {@code dueDate}.
+ */
 @Service
 public class TaskMappers {
 

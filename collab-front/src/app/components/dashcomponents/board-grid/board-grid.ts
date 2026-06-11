@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { inject } from '@angular/core';
 import { BoardDTO } from '../../../models/board.model';
 
+/** Grille ou liste des boards du dashboard, avec gestion des favoris et des couleurs. */
 @Component({
   selector: 'app-board-grid',
   standalone: true,
