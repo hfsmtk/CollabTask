@@ -760,6 +760,8 @@
   letter-spacing: 0.05em;
 }
 
+ feature/auth-roles
+
 .btn-ai {
   align-self: flex-start;
   padding: 6px 12px;
@@ -790,6 +792,7 @@
   font-weight: 500;
 }
 
+ develop
 /* ─── Sélecteur priorité ─────────────────────────────────── */
 .priority-selector {
   display: flex;

@@ -720,4 +720,8 @@
 }
 
 .label-create-btn:hover { opacity: 0.85; }
+ feature/auth-roles
 .label-create-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.label-create-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+ develop

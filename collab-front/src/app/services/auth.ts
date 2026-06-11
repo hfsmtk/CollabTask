@@ -11,12 +11,20 @@ interface AuthRequest {
 }
 
 //Réception du front
+ feature/auth-roles
+iinterface AuthResponse {
+
 interface AuthResponse {
+ develop
   token?: string;
   userId: number;
   email?: string;
   name?: string;
   workspaceId?: number;
+ feature/auth-roles
+  role?: string;  
+
+ develop
 }
 
 @Injectable({
@@ -71,5 +79,17 @@ export class AuthService {
     if (response.workspaceId) {
       localStorage.setItem('workspaceId', response.workspaceId.toString());
     }
+ feature/auth-roles
+    if (response.role) {
+      localStorage.setItem('myRole', response.role);  // ← ajouter
+    }
   }
+
+  getCurrentUserRole(): string {
+    return localStorage.getItem('myRole') ?? '';  // ← ajouter cette méthode
+  }
+
+
+  }
+ develop
 }

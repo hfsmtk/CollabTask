@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a5b58135-9012-49d1-80d2-5eec9b42ad04" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/board-view/board-view.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/board-view/board-view.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/board-view/board-view.html" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/board-view/board-view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/board-view/board-view.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/board-view/board-view.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/boards-page/boards-page.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/boards-page/boards-page.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/board-grid/board-grid.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/board-grid/board-grid.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/board-modals/board-modals.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/board-modals/board-modals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/sidebar/sidebar.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/sidebar/sidebar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/sidebar/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/sidebar/sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/stats-cards/stats-cards.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/stats-cards/stats-cards.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/topbar/topbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/topbar/topbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/topbar/topbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/dashcomponents/topbar/topbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/login/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/login/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/login/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/profile-page/profile-page.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/profile-page/profile-page.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/register/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/register/register.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../collab-front/src/app/components/register/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/../collab-front/src/app/components/register/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Exception" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;hamid78631&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/hamid78631/collab-task.git&quot;,
+    &quot;accountId&quot;: &quot;34142be7-8e1f-4ffc-b6ca-bf22a394a272&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="39LNYHb1ShWRx2bl6J6izzQaLE8" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.CollabApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CollabApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/DELL/IdeaProjects/collab-task/collab_backend&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.collab.exceptions" />
+      <recent name="com.example.collab.mappers" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.example.collab.dtos" />
+      <recent name="com.example.collab.exceptions" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a5b58135-9012-49d1-80d2-5eec9b42ad04" name="Changes" comment="" />
+      <created>1770471437140</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1770471437140</updated>
+    </task>
+    <servers />
+  </component>
+</project>

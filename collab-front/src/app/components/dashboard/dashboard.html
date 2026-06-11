@@ -1,0 +1,68 @@
+<div class="app">
+
+  <app-sidebar
+    [totalBoards]="totalBoards()"
+    [lateTasks]="lateTasks">
+  </app-sidebar>
+
+  <main class="main">
+
+    <app-topbar
+      [today]="today"
+      [searchTerm]="searchTerm"
+      [sortBy]="sortBy"
+      [searchFocused]="searchFocused"
+      (searchTermChange)="searchTerm = $event"
+      (sortByChange)="sortBy = $event"
+      (searchFocusedChange)="searchFocused = $event">
+    </app-topbar>
+
+    <div class="content">
+
+      <app-stats-cards
+        [totalBoards]="totalBoards()"
+        [completedTasks]="completedTasks"
+        [lateTasks]="lateTasks"
+        [activeMembers]="activeMembers">
+      </app-stats-cards>
+
+      @if (lateTasks > 0) {
+      <div class="alert">
+        <svg class="alert-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          <div class="alert-title">{{ lateTasks }} tâches dépassent leur deadline</div>
+          <div class="alert-sub">Vérifiez vos priorités</div>
+        </div>
+        <button class="alert-cta" routerLink="/tasks">Voir les retards →</button>
+      </div>
+      }
+
+      <app-board-grid
+        [boards]="filteredBoards()"
+        [viewMode]="viewMode"
+        (viewModeChange)="viewMode = $event"
+        (toggleFav)="toggleFav($event)"
+        [canEdit]="userRole === 'OWNER' || userRole === 'ADMIN'"
+        [canDelete]="userRole === 'OWNER'"
+        (openEdit)="userRole === 'OWNER' || userRole === 'ADMIN' ? openEditModal($event) : null"
+        (openDelete)="userRole === 'OWNER' ? openDeleteConfirm($event) : null">
+      </app-board-grid>
+
+    </div>
+  </main>
+
+</div>
+
+@if (userRole === 'OWNER' || userRole === 'ADMIN') {
+<app-board-modals
+  [showEditModal]="showEditModal"
+  [showDeleteConfirm]="showDeleteConfirm"
+  [editBoard]="editBoard"
+  [editNameError]="editNameError"
+  (saveEdit)="saveEditBoard()"
+  (confirmDelete)="confirmDelete()"
+  (closeEdit)="closeEditModal()"
+  (closeDelete)="closeDeleteConfirm()"
+  (editNameErrorChange)="editNameError = $event">
+</app-board-modals>
+}

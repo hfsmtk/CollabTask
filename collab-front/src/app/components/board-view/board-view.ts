@@ -8,7 +8,10 @@ import { CommentService } from '../../services/comment';
 import { AuthService } from '../../services/auth';
 import { NotificationsService } from '../../services/notifications';
 import { LabelService } from '../../services/label';
+ feature/auth-roles
+
 import { AiService } from '../../services/ai';
+ develop
 import { BoardDTO } from '../../models/board.model';
 import { TaskColumnDTO } from '../../models/taskColumn.model';
 import { TaskDTO } from '../../models/task.model';
@@ -35,7 +38,10 @@ export class BoardView implements OnInit {
   private notificationsService = inject(NotificationsService);
   private workspaceService = inject(WorkspaceService);
   private labelService = inject(LabelService);
+ feature/auth-roles
+
   private aiService = inject(AiService);
+ develop
 
   currentUserInitial = (this.authService.getCurrentUserName() || 'U')[0].toUpperCase();
 
@@ -74,8 +80,10 @@ export class BoardView implements OnInit {
   modalAssigneeId = signal<number | null>(null);
   newCommentContent = signal('');
   modalDirty = signal(false);
+ feature/auth-roles
+
   isGeneratingDescription = signal(false);
-  aiError = signal('');
+develop
   modalDueDate = signal('');
   workspaceLabels = signal<LabelDTO[]>([]);
   showLabelPicker = signal<boolean>(false);
@@ -314,8 +322,10 @@ readonly memberColors = [
     this.modalAssigneeId.set(task.assigneeId ?? null);
     this.newCommentContent.set('');
     this.modalDirty.set(false);
+
     this.aiError.set('');
     this.isGeneratingDescription.set(false);
+ develop
     this.modalDueDate.set(task.dueDate || '');
     this.taskComments.set([]);
     this.commentService.getCommentsByTask(task.id!).subscribe({
@@ -351,6 +361,8 @@ readonly memberColors = [
     });
   }
 
+ feature/auth-roles
+
   generateDescriptionWithAi() {
     const title = this.modalTitle().trim();
     if (!title || this.isGeneratingDescription()) return;
@@ -378,12 +390,16 @@ readonly memberColors = [
     });
   }
 
+ develop
   closeTaskModal() {
     this.selectedTask.set(null);
     this.taskComments.set([]);
     this.modalDirty.set(false);
+ feature/auth-roles
+
     this.aiError.set('');
     this.isGeneratingDescription.set(false);
+ develop
   }
 
   addComment() {
