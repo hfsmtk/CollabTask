@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommentDTO } from '../models/comment.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class CommentService {
   constructor(private http: HttpClient) {}
 
-  private api = 'http://localhost:8086/api';
+  private api = environment.apiUrl;
   createComment(commentDTO: CommentDTO): Observable<CommentDTO> {
     return this.http.post<CommentDTO>(`${this.api}/comment`, commentDTO);
   }

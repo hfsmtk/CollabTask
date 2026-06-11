@@ -12,6 +12,7 @@ import com.example.collab.mappers.WorkspaceMappers;
 import com.example.collab.repositories.UserRepository;
 import com.example.collab.repositories.WorkspaceMemberRepository;
 import com.example.collab.repositories.WorkspaceRepository;
+import com.example.collab.utils.SlugUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,12 +55,7 @@ public class WorkspaceMemberServiceImpl implements WorkspaceMemberService{
                 .orElseThrow(() -> new WorkspaceException("Ce workspace n'existe pas !"));
         workspace.setName(workspaceDTO.getName());
         workspace.setDescription(workspaceDTO.getDescription());
-
-        String slug = workspaceDTO.getName().toLowerCase()
-                .replaceAll("[^a-z0-9]", "-")
-                .replaceAll("-+", "-")
-                .replaceAll("^-|-$", "");
-        workspace.setSlug(slug);
+        workspace.setSlug(SlugUtils.toSlug(workspaceDTO.getName()));
 
         return workspaceMappers.workspaceToWorkspaceDTO(workspaceRepository.save(workspace));
     }
@@ -76,12 +72,7 @@ public class WorkspaceMemberServiceImpl implements WorkspaceMemberService{
         User owner = userRepository.findById(workspaceDTO.getOwnerId())
                 .orElseThrow(() -> new UserNotFoundException("Utilisateur non trouvé !"));
         workspace.setOwner(owner);
-
-        String slug = workspaceDTO.getName().toLowerCase()
-                .replaceAll("[^a-z0-9]", "-")
-                .replaceAll("-+", "-")
-                .replaceAll("^-|-$", "");
-        workspace.setSlug(slug);
+        workspace.setSlug(SlugUtils.toSlug(workspaceDTO.getName()));
 
         Workspace saved = workspaceRepository.save(workspace);
 

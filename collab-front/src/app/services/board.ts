@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BoardDTO } from '../models/board.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BoardService {
-  private api = 'http://localhost:8086/api';
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

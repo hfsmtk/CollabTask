@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TaskColumnDTO } from '../models/taskColumn.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class TaskColumnService {
 
   constructor(private http: HttpClient) { }
 
-  private apiUrl = 'http://localhost:8086/api';
+  private apiUrl = environment.apiUrl;
 
   // Créer une nouvelle colonne de tâches
   createTaskColumn(taskColumn: TaskColumnDTO) : Observable<TaskColumnDTO> {

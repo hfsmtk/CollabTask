@@ -2,52 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-
-//Envoi vers le back
-interface AuthRequest {
-  name?: string;
-  email?: string;
-  password: string;
-}
-
-//Réception du front
- feature/auth-roles
-iinterface AuthResponse {
+import { environment } from '../../environments/environment';
 
 interface AuthResponse {
- develop
   token?: string;
   userId: number;
   email?: string;
   name?: string;
   workspaceId?: number;
- feature/auth-roles
-  role?: string;  
-
- develop
+  role?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = "http://localhost:8086/auth";
+  private apiUrl = environment.authUrl;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  //inscription
   register(name: string, email: string, password: string) {
     return this.httpClient.post<AuthResponse>(`${this.apiUrl}/register`, { name, email, password })
       .pipe(tap(response => this.saveSession(response)));
   }
 
-  //login
   login(email: string, password: string) {
     return this.httpClient.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(tap(response => this.saveSession(response)));
   }
 
-  //logout
   logout() {
     localStorage.clear();
     this.router.navigate(['/login']);
@@ -57,7 +40,6 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  //Récupérer le token
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -70,7 +52,6 @@ export class AuthService {
     return localStorage.getItem('userName') ?? '';
   }
 
-  //Sauvegarder les infos de la session dans le localStorage
   saveSession(response: AuthResponse) {
     localStorage.setItem('token', response.token ?? '');
     localStorage.setItem('userId', response.userId.toString());
@@ -79,17 +60,12 @@ export class AuthService {
     if (response.workspaceId) {
       localStorage.setItem('workspaceId', response.workspaceId.toString());
     }
- feature/auth-roles
     if (response.role) {
-      localStorage.setItem('myRole', response.role);  // ← ajouter
+      localStorage.setItem('myRole', response.role);
     }
   }
 
   getCurrentUserRole(): string {
-    return localStorage.getItem('myRole') ?? '';  // ← ajouter cette méthode
+    return localStorage.getItem('myRole') ?? '';
   }
-
-
-  }
- develop
 }

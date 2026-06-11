@@ -1,4 +1,5 @@
 export const environment = {
-    production : false,
-    backendHost: 'http://localhost:8086/api'
+    production: false,
+    apiUrl: 'http://localhost:8086/api',
+    authUrl: 'http://localhost:8086/auth'
 };

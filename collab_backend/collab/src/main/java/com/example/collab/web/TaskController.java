@@ -6,13 +6,10 @@ import com.example.collab.exceptions.TaskColumnException;
 import com.example.collab.exceptions.TaskException;
 import com.example.collab.exceptions.UserNotFoundException;
 import com.example.collab.services.TaskService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-@CrossOrigin("*")
 
 @RestController
 @RequestMapping("/api")

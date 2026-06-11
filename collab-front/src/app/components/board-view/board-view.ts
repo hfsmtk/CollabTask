@@ -8,10 +8,7 @@ import { CommentService } from '../../services/comment';
 import { AuthService } from '../../services/auth';
 import { NotificationsService } from '../../services/notifications';
 import { LabelService } from '../../services/label';
- feature/auth-roles
-
 import { AiService } from '../../services/ai';
- develop
 import { BoardDTO } from '../../models/board.model';
 import { TaskColumnDTO } from '../../models/taskColumn.model';
 import { TaskDTO } from '../../models/task.model';
@@ -38,10 +35,7 @@ export class BoardView implements OnInit {
   private notificationsService = inject(NotificationsService);
   private workspaceService = inject(WorkspaceService);
   private labelService = inject(LabelService);
- feature/auth-roles
-
   private aiService = inject(AiService);
- develop
 
   currentUserInitial = (this.authService.getCurrentUserName() || 'U')[0].toUpperCase();
 
@@ -50,28 +44,22 @@ export class BoardView implements OnInit {
   columns = signal<TaskColumnDTO[]>([]);
   tasksByColumn = signal<Map<number, TaskDTO[]>>(new Map());
 
-  // Ajout de colonne
   showAddColumn = signal(false);
   newColumnName = signal('');
 
-  // Renommer colonne (double-clic)
   editingColumnId = signal<number | null>(null);
   editingColumnName = signal('');
 
-  // Ajout de tâche
   addingTaskColumnId = signal<number | null>(null);
   newTaskTitle = signal('');
 
-  // Drag & drop
   draggedTaskId = signal<number | null>(null);
   dragSourceColumnId = signal<number | null>(null);
   dragOverColumnId = signal<number | null>(null);
 
-  // Notifications
   notifications = signal<NotificationDTO[]>([]);
   showNotifDropdown = signal(false);
 
-  // Modal détail tâche
   selectedTask = signal<TaskDTO | null>(null);
   taskComments = signal<CommentDTO[]>([]);
   modalTitle = signal('');
@@ -80,27 +68,23 @@ export class BoardView implements OnInit {
   modalAssigneeId = signal<number | null>(null);
   newCommentContent = signal('');
   modalDirty = signal(false);
- feature/auth-roles
-
   isGeneratingDescription = signal(false);
-develop
+  aiError = signal('');
   modalDueDate = signal('');
   workspaceLabels = signal<LabelDTO[]>([]);
   showLabelPicker = signal<boolean>(false);
   newLabelName = signal<string>('');
   newLabelColor = signal<string>('#6366f1');
 
-  // Filtres
   filterPriority = signal<string>('ALL');
   filterAssigneeId = signal<number | null>(null);
   filterLabelId = signal<number | null>(null);
 
-  //Vue liste board-view
-  viewMode = signal<'kanban' |'list' | 'calendar'>('kanban');
+  viewMode = signal<'kanban' | 'list' | 'calendar'>('kanban');
   calendarYear = signal<number>(new Date().getFullYear());
   calendarMonth = signal<number>(new Date().getMonth());
 
-readonly memberColors = [
+  readonly memberColors = [
     '#4F46E5', '#0891B2', '#16A34A',
     '#DB2777', '#D97706', '#7C3AED'
   ];
@@ -148,8 +132,6 @@ readonly memberColors = [
     });
   }
 
-  // ── Notifications ─────────────────────────────────────────────────
-
   toggleNotifDropdown() {
     this.showNotifDropdown.set(!this.showNotifDropdown());
   }
@@ -160,8 +142,6 @@ readonly memberColors = [
       error: (err) => console.error('Erreur markAsRead', err)
     });
   }
-
-  // ── Colonnes ──────────────────────────────────────────────────────
 
   addColumn() {
     const name = this.newColumnName().trim();
@@ -214,8 +194,6 @@ readonly memberColors = [
     });
   }
 
-  // ── Tâches ────────────────────────────────────────────────────────
-
   startAddTask(colId: number) {
     this.addingTaskColumnId.set(colId);
     this.newTaskTitle.set('');
@@ -262,8 +240,6 @@ readonly memberColors = [
       error: (err) => console.error('Erreur suppression tâche', err)
     });
   }
-
-  // ── Drag & drop ───────────────────────────────────────────────────
 
   onDragStart(taskId: number, colId: number, event: DragEvent) {
     this.draggedTaskId.set(taskId);
@@ -312,8 +288,6 @@ readonly memberColors = [
     this.dragOverColumnId.set(null);
   }
 
-  // ── Modal détail tâche ────────────────────────────────────────────
-
   openTaskModal(task: TaskDTO) {
     this.selectedTask.set(task);
     this.modalTitle.set(task.title);
@@ -322,10 +296,8 @@ readonly memberColors = [
     this.modalAssigneeId.set(task.assigneeId ?? null);
     this.newCommentContent.set('');
     this.modalDirty.set(false);
-
     this.aiError.set('');
     this.isGeneratingDescription.set(false);
- develop
     this.modalDueDate.set(task.dueDate || '');
     this.taskComments.set([]);
     this.commentService.getCommentsByTask(task.id!).subscribe({
@@ -349,7 +321,7 @@ readonly memberColors = [
       description: this.modalDesc(),
       priority: this.modalPriority(),
       assigneeId: this.modalAssigneeId() ?? undefined,
-      dueDate : this.modalDueDate() || undefined
+      dueDate: this.modalDueDate() || undefined
     };
     this.taskService.updateTask(task.id!, updated).subscribe({
       next: (result) => {
@@ -360,8 +332,6 @@ readonly memberColors = [
       error: (err) => console.error('Erreur mise à jour tâche', err)
     });
   }
-
- feature/auth-roles
 
   generateDescriptionWithAi() {
     const title = this.modalTitle().trim();
@@ -374,15 +344,15 @@ readonly memberColors = [
       next: (response) => {
         const description = response.description?.trim();
         if (!description) {
-          this.aiError.set('Aucune description n\u0027a ete generee.');
+          this.aiError.set('Aucune description n\'a été générée.');
           return;
         }
         this.modalDesc.set(description);
         this.modalDirty.set(true);
       },
       error: (err) => {
-        console.error('Erreur generation description IA', err);
-        const message = err?.error?.message || err?.message || 'Impossible de generer la description pour le moment.';
+        console.error('Erreur génération description IA', err);
+        const message = err?.error?.message || err?.message || 'Impossible de générer la description pour le moment.';
         this.aiError.set(message);
         this.isGeneratingDescription.set(false);
       },
@@ -390,16 +360,12 @@ readonly memberColors = [
     });
   }
 
- develop
   closeTaskModal() {
     this.selectedTask.set(null);
     this.taskComments.set([]);
     this.modalDirty.set(false);
- feature/auth-roles
-
     this.aiError.set('');
     this.isGeneratingDescription.set(false);
- develop
   }
 
   addComment() {
@@ -429,8 +395,6 @@ readonly memberColors = [
       error: (err) => console.error('Erreur suppression commentaire', err)
     });
   }
-
-  // ── Labels ────────────────────────────────────────────────────────
 
   isLabelOnTask(labelId: number): boolean {
     return (this.selectedTask()?.labels ?? []).some(l => l.id === labelId);
@@ -471,8 +435,6 @@ readonly memberColors = [
       error: (err) => console.error('Erreur création label', err)
     });
   }
-
-  // ── Utilitaires ───────────────────────────────────────────────────
 
   private replaceTask(updated: TaskDTO) {
     const map = new Map(this.tasksByColumn());
@@ -564,15 +526,14 @@ readonly memberColors = [
     }
     return days;
   }
-calendarMonthLabel(): string {
+
+  calendarMonthLabel(): string {
     return new Date(this.calendarYear(), this.calendarMonth(), 1)
       .toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
   }
 
-
-
   priorityLabel(p: string): string {
-    return p === 'HIGH' ? 'Haute' : p === 'MEDIUM' ? 'Moyenn  e' : 'Basse';
+    return p === 'HIGH' ? 'Haute' : p === 'MEDIUM' ? 'Moyenne' : 'Basse';
   }
 
   formatDate(dateStr?: string): string {
@@ -589,7 +550,6 @@ calendarMonthLabel(): string {
     return new Date().toISOString().split('T')[0];
   }
 
-  // Couleur dérivée de la position de la colonne dans le board
   private readonly COLUMN_COLORS = [
     '#4F46E5', '#0891B2', '#16A34A', '#D97706', '#DC2626', '#7C3AED', '#DB2777', '#0D9488'
   ];
@@ -599,31 +559,28 @@ calendarMonthLabel(): string {
     return this.COLUMN_COLORS[idx % this.COLUMN_COLORS.length] ?? '#4F46E5';
   }
 
-  // Détecte si une colonne représente un état "terminé" d'après son nom
   isDoneColumn(colName: string): boolean {
     const n = colName.toLowerCase();
     return n.includes('terminé') || n.includes('done') || n.includes('fini')
-        || n.includes('completed') || n.includes('fermé') || n.includes('closed');
+      || n.includes('completed') || n.includes('fermé') || n.includes('closed');
   }
 
-  // Couleur de la colonne qui contient la tâche sélectionnée
   selectedTaskColumnColor(): string {
     const colId = this.selectedTask()?.taskColumnId;
     if (!colId) return '#4F46E5';
     return this.getColumnColor(colId);
   }
 
-  // Couleur d'avatar pour un assignee (basée sur l'id)
   getAssigneeColor(assigneeId: number): string {
     const colors = ['#4F46E5', '#0891B2', '#16A34A', '#D97706', '#DC2626', '#7C3AED'];
     return colors[assigneeId % colors.length];
   }
- getMemberByAssigneeId(assigneeId: number): WorkspaceMemberDTO | undefined {
+
+  getMemberByAssigneeId(assigneeId: number): WorkspaceMemberDTO | undefined {
     return this.members().find(m => m.userId === assigneeId);
   }
 
-  // récupérer la couleur du membre
-  getMemberColor(index : number) : string {
-    return this.memberColors[index % this.memberColors.length] ;
-    }
+  getMemberColor(index: number): string {
+    return this.memberColors[index % this.memberColors.length];
+  }
 }

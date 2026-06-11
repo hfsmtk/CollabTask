@@ -11,6 +11,7 @@ import com.example.collab.repositories.UserRepository;
 import com.example.collab.repositories.WorkspaceMemberRepository;
 import com.example.collab.repositories.WorkspaceRepository;
 import com.example.collab.security.JwtUtil;
+import com.example.collab.utils.SlugUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,11 +49,7 @@ public class AuthController {
         Workspace workspace = new Workspace();
         workspace.setName(user.getName() + "'s Workspace");
         workspace.setDescription("Workspace par défaut");
-        String slug = user.getName().toLowerCase()
-                .replaceAll("[^a-z0-9]", "-")
-                .replaceAll("-+", "-")
-                .replaceAll("^-|-$", "")
-                + "-" + user.getId();
+        String slug = SlugUtils.toSlug(user.getName()) + "-" + user.getId();
         workspace.setSlug(slug);
         workspace.setOwner(user);
         Workspace savedWorkspace = workspaceRepository.save(workspace);
@@ -63,10 +60,9 @@ public class AuthController {
         ownerMember.setRole(WorkspaceRole.OWNER);
         workspaceMemberRepository.save(ownerMember);
 
-        // Générer le token JWT
         String token = jwtUtil.generateToken(user.getEmail());
 
-        return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getName(), user.getEmail(), savedWorkspace.getId()));
+        return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getName(), user.getEmail(), savedWorkspace.getId(), WorkspaceRole.OWNER.name()));
     }
 
     // POST /auth/login
@@ -84,14 +80,15 @@ public class AuthController {
             return ResponseEntity.status(401).body("Mot de passe incorrect");
         }
 
-        // Générer le token JWT
         String token = jwtUtil.generateToken(user.getEmail());
 
-        // Récupérer le premier workspace de l'utilisateur
         Long workspaceId = workspaceRepository.findByOwnerId(user.getId())
                 .stream().findFirst().map(Workspace::getId).orElse(null);
 
-        return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getName(), user.getEmail(), workspaceId));
+        String role = workspaceMemberRepository.findByUserId(user.getId())
+                .stream().findFirst().map(m -> m.getRole().name()).orElse(WorkspaceRole.MEMBER.name());
+
+        return ResponseEntity.ok(new AuthResponse(token, user.getId(), user.getName(), user.getEmail(), workspaceId, role));
     }
 }
 

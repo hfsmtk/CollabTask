@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LabelDTO } from '../models/label.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { LabelDTO } from '../models/label.model';
 export class LabelService {
   constructor(private httpClient: HttpClient) {}
 
-  private api = 'http://localhost:8086/api';
+  private api = environment.apiUrl;
 
   createLabel(labelDTO: LabelDTO): Observable<LabelDTO> {
     return this.httpClient.post<LabelDTO>(`${this.api}/labels`, labelDTO);

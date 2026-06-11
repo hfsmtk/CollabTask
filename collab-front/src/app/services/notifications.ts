@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NotificationDTO } from '../models/notification.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationsService {
 
-  private apiUrl = 'http://localhost:8086/api';
+  private apiUrl = environment.apiUrl;
   constructor(private httpClient: HttpClient) {}
 
   getUnreadNotification(userId: number): Observable<NotificationDTO[]> {
