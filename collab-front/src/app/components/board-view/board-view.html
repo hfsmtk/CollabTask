@@ -493,6 +493,16 @@
       <!-- Description -->
       <div class="modal-field">
         <label class="modal-label">Description</label>
+        <button
+          type="button"
+          class="btn-ai"
+          (click)="generateDescriptionWithAi()"
+          [disabled]="isGeneratingDescription() || !modalTitle().trim()">
+          {{ isGeneratingDescription() ? 'Generating...' : '✨ Generate with AI' }}
+        </button>
+        @if(aiError()) {
+          <p class="ai-error">{{ aiError() }}</p>
+        }
         <textarea
           class="task-modal-desc"
           placeholder="Ajouter une description…"
