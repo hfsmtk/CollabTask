@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entité représentant un espace de travail (workspace).
+ * Un workspace regroupe des membres, des boards et est possédé par un utilisateur (owner).
+ */
 @Entity
 @Table(name = "workspaces")
 @Data
@@ -22,6 +26,7 @@ public class Workspace {
     private String name;
     private String description;
 
+    /** Identifiant URL-friendly généré depuis le nom (ex. "mon-projet"). */
     @Column(unique = true)
     private String slug;
 

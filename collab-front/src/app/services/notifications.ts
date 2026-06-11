@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { NotificationDTO } from '../models/notification.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour la gestion des notifications (lecture, marquage lu, création). */
 @Injectable({
   providedIn: 'root',
 })

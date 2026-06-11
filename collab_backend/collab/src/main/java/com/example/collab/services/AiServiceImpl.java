@@ -12,6 +12,10 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implémentation de {@link AiService} via l'API Groq (compatible OpenAI).
+ * La clé API et le modèle sont injectés depuis {@code application.properties}.
+ */
 @Service
 public class AiServiceImpl implements AiService {
 
@@ -79,6 +83,7 @@ public class AiServiceImpl implements AiService {
         }
     }
 
+    /** Extrait le texte généré du JSON de réponse Groq (chemin {@code choices[0].message.content}). */
     private String extractText(String responseBody) throws Exception {
         JsonNode root = objectMapper.readTree(responseBody);
         JsonNode content = root.path("choices").path(0).path("message").path("content");

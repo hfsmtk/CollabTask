@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * Utilitaire JWT : génération, validation et extraction des claims.
+ * Utilise HMAC-SHA256 avec une clé secrète de 256 bits minimum.
+ * Les tokens ont une durée de vie de 24 heures.
+ */
 @Component
 public class JwtUtil {
 

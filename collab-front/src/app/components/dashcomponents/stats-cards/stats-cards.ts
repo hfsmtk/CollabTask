@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 
+/** Carte de statistiques du dashboard : total boards, tâches terminées, tâches en retard, membres actifs. */
 @Component({
   selector: 'app-stats-cards',
   standalone: true,

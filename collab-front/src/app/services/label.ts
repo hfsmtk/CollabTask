@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { LabelDTO } from '../models/label.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour la gestion des labels et leur association aux tâches. */
 @Injectable({
   providedIn: 'root',
 })

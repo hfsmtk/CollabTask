@@ -21,10 +21,15 @@ import java.util.Arrays;
 import java.util.List;
 
 
+/**
+ * Implémentation de {@link WorkspaceMemberService}.
+ * Les opérations sensibles appellent {@link #requireRole(Long, WorkspaceRole...)}
+ * pour vérifier le rôle de l'utilisateur connecté (via Spring Security).
+ */
 @Service
 @Transactional
 @AllArgsConstructor
-public class WorkspaceMemberServiceImpl implements WorkspaceMemberService{
+public class WorkspaceMemberServiceImpl implements WorkspaceMemberService {
 
     private WorkspaceMemberRepository workspaceMemberRepository ;
     private WorkspaceRepository workspaceRepository ;
@@ -172,6 +177,14 @@ public class WorkspaceMemberServiceImpl implements WorkspaceMemberService{
         workspaceMemberRepository.save(member);
     }
 
+    /**
+     * Vérifie que l'utilisateur connecté possède l'un des rôles autorisés dans le workspace.
+     *
+     * @param workspaceId identifiant du workspace
+     * @param allowed     rôles autorisés
+     * @throws UserNotFoundException si l'utilisateur connecté n'est pas en base
+     * @throws WorkspaceException    si l'utilisateur n'est pas membre ou n'a pas le bon rôle
+     */
     private void requireRole(Long workspaceId, WorkspaceRole... allowed) throws WorkspaceException, UserNotFoundException {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)

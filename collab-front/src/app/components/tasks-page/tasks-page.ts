@@ -11,6 +11,7 @@ import { TaskDTO } from '../../models/task.model';
 import { CommentDTO } from '../../models/comment.model';
 import { LabelDTO } from '../../models/label.model';
 
+/** Page de gestion des tâches assignées à l'utilisateur connecté. */
 @Component({
   selector: 'app-tasks-page',
   imports: [FormsModule, DatePipe, RouterLink],

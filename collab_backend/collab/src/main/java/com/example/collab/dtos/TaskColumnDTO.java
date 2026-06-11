@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
+/** DTO de transfert pour une colonne Kanban. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

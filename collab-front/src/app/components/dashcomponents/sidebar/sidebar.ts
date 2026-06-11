@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+/** Barre de navigation latérale du dashboard. Affiche le nom de l'utilisateur et des compteurs de boards/tâches. */
 @Component({
   selector: 'app-sidebar',
   standalone: true,

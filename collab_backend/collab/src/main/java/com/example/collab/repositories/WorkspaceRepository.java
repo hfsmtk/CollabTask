@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+/** Repository JPA pour les workspaces. */
 public interface WorkspaceRepository extends JpaRepository<Workspace,Long> {
     List<Workspace> findByOwnerId(Long userId);
     Optional<Workspace> findByName(  String name);

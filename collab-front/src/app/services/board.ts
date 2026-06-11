@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BoardDTO } from '../models/board.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour les opérations CRUD sur les tableaux (boards). */
 @Injectable({ providedIn: 'root' })
 export class BoardService {
   private api = environment.apiUrl;

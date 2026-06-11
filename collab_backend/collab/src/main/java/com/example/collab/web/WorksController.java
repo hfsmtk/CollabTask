@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des workspaces et de leurs membres. */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")

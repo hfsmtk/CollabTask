@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { WorkspaceDTO, WorkspaceMemberDTO, WorkspaceRole } from '../models/workspace.model';
 import { environment } from '../../environments/environment';
 
+/** Service HTTP pour la gestion des workspaces et de leurs membres. */
 @Injectable({
   providedIn: 'root',
 })

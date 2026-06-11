@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth';
 
+/** Page de connexion. Soumet les identifiants et redirige vers le dashboard si le login réussit. */
 @Component({
   selector: 'app-login',
   standalone: true,

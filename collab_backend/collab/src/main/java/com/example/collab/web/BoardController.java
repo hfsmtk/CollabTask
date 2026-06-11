@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des tableaux (boards). */
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

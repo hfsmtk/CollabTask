@@ -1,3 +1,4 @@
+/** Modèle de données pour une notification. */
 export interface NotificationDTO {
   id?: number ,
   message: string,

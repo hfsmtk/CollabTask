@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
+/** DTO de transfert pour un workspace. {@code myRole} est renseigné lors des requêtes par utilisateur. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class WorkspaceDTO {
 
     private Long id ;

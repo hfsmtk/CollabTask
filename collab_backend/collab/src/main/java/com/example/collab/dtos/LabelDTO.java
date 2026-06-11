@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** DTO de transfert pour un label. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

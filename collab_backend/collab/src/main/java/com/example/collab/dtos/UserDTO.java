@@ -14,10 +14,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/** DTO de transfert pour un utilisateur. Le mot de passe n'est accessible qu'en écriture. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class UserDTO {
 
     private Long id ;

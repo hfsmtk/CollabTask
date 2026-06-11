@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/** DTO de transfert pour un tableau (board). */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class BoardDTO {
 
     private Long id ;

@@ -1,3 +1,4 @@
+/** Modèle de données pour un utilisateur. */
 export interface UserDTO {
     id: number;
     name : string;

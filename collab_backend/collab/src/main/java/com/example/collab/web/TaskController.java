@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des tâches (CRUD + déplacement entre colonnes). */
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

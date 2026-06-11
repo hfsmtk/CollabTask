@@ -6,6 +6,7 @@ import com.example.collab.exceptions.BoardException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+/** Convertit entre {@link com.example.collab.entities.Board} et {@link com.example.collab.dtos.BoardDTO}. */
 @Service
 public class BoardMappers {
 

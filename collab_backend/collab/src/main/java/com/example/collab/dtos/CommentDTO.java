@@ -10,10 +10,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+/** DTO de transfert pour un commentaire de tâche. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class CommentDTO {
 
     private Long id ;

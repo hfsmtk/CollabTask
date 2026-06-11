@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des colonnes d'un tableau Kanban. */
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api")
 @AllArgsConstructor
-
 public class TaskColumnController {
 
     private TaskColumnService taskColumnService;

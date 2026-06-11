@@ -1,11 +1,14 @@
 package com.example.collab.entities;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entité représentant une étiquette (label) colorée.
+ * Les labels sont définis au niveau du workspace et peuvent être attachés à plusieurs tâches.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,9 +17,12 @@ public class Label {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String name ;
-    private String color ;
+    private Long id;
+
+    private String name;
+
+    /** Code couleur hexadécimal (ex. "#6366f1"). */
+    private String color;
 
     @ManyToOne
     @JoinColumn(name = "workspace_id")

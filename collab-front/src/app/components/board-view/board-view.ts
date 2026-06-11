@@ -18,6 +18,11 @@ import { LabelDTO } from '../../models/label.model';
 import { WorkspaceService } from '../../services/workspace';
 import { WorkspaceMemberDTO } from '../../models/workspace.model';
 
+/**
+ * Vue principale d'un tableau Kanban.
+ * Charge les colonnes, tâches, membres et labels du board,
+ * et gère le modal de tâche (création, édition, déplacement, génération IA).
+ */
 @Component({
   selector: 'app-board-view',
   imports: [RouterLink, FormsModule],

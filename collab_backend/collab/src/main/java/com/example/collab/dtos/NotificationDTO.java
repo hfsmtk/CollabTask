@@ -7,10 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+/** DTO de transfert pour une notification. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class NotificationDTO {
 
     private Long id;

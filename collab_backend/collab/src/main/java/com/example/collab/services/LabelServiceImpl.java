@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/** Implémentation de {@link LabelService}. */
 @Service
 @RequiredArgsConstructor
 public class LabelServiceImpl implements LabelService {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** Contrôleur REST pour la gestion des labels et leur association aux tâches. */
 @Transactional
 @RestController
 @AllArgsConstructor
