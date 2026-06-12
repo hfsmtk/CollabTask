@@ -148,6 +148,7 @@ Sépare la logique d'accès aux données de la logique métier, permettant un co
 | Louleb Ayoub | Feature & AI Lead |
 | Ouadouss Wissal | Quality & Refactoring Lead |
 | Aymen Karkouri Idrissi | Business & Documentation Lead |
+| Ait Said Youssef | Kanban View |
 
 ---
 
