@@ -1,0 +1,572 @@
+<!-- ─── Topbar ─────────────────────────────────────────────── -->
+<header class="topbar" (click)="showNotifDropdown.set(false)">
+  <div class="topbar-left">
+    <a class="btn-back" [routerLink]="['/boards']">
+      <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 010 .708L5.707 8l5.647 5.646a.5.5 0 01-.708.708l-6-6a.5.5 0 010-.708l6-6a.5.5 0 01.708 0z"/>
+      </svg>
+      Mes boards
+    </a>
+    <div class="topbar-sep"></div>
+    @if(board()) {
+    <div class="board-color-dot" [style.background]="board()!.backgroundColor || '#4F46E5'"></div>
+    <span class="topbar-title">{{ board()!.title }}</span>
+    }
+  </div>
+
+  <div class="topbar-right">
+
+    <!-- Cloche notifications -->
+    <div class="notif-wrapper">
+      <div class="notif-bell" (click)="toggleNotifDropdown(); $event.stopPropagation()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 01-3.46 0"/>
+        </svg>
+        @if(notifications().length > 0) {
+          <span class="notif-badge">{{ notifications().length }}</span>
+        }
+      </div>
+
+      @if(showNotifDropdown()) {
+        <div class="notif-dropdown" (click)="$event.stopPropagation()">
+          <div class="notif-dropdown-header">
+            <span class="notif-dropdown-title">Notifications</span>
+            @if(notifications().length > 0) {
+              <span class="notif-dropdown-count">{{ notifications().length }} non lue{{ notifications().length > 1 ? 's' : '' }}</span>
+            }
+          </div>
+          <div class="notif-dropdown-list">
+            @if(notifications().length === 0) {
+              <p class="notif-empty">Aucune notification</p>
+            }
+            @for(notif of notifications(); track notif.id) {
+              <div class="notif-item" (click)="markNotifAsRead(notif)">
+                <div class="notif-icon notif-icon--{{ notif.type.toLowerCase() }}">
+                  @if(notif.type.toLowerCase() === 'task_created') {
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  } @else if(notif.type.toLowerCase() === 'member_added') {
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  } @else if(notif.type.toLowerCase() === 'comment_added') {
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  } @else {
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                  }
+                </div>
+                <div class="notif-body">
+                  <p class="notif-msg">{{ notif.message }}</p>
+                  <span class="notif-meta">{{ formatDate(notif.createdAt) }}</span>
+                  @if(notif.type.toLowerCase() === 'member_added') {
+                    <a class="notif-link-action" [routerLink]="['/boards']" (click)="markNotifAsRead(notif); $event.stopPropagation()">Voir le workspace →</a>
+                  } @else if(notif.type.toLowerCase() === 'comment_added') {
+                    <a class="notif-link-action" [routerLink]="['/tasks']" (click)="markNotifAsRead(notif); $event.stopPropagation()">Voir la tâche →</a>
+                  }
+                </div>
+                <div class="notif-unread-dot"></div>
+              </div>
+            }
+          </div>
+          <div class="notif-dropdown-footer">Cliquer pour marquer comme lue</div>
+        </div>
+      }
+    </div>
+
+    <div class="avatar-stack">
+      @for(member of members() ; track member.userId; let i = $index) {
+        <div class="avatar-sm" [style.background]="getMemberColor(i)" [title] = "member.name">
+          {{member.name.charAt(0).toUpperCase()}}
+        </div>
+
+      }
+
+    </div>
+    <button class="btn-invite">+ Inviter</button>
+  </div>
+</header>
+
+<!-- ─── Filtres ────────────────────────────────────────────── -->
+<div class="filters-bar">
+
+  <div class="filter-chip filter-chip--priority"
+    [class.filter-chip--high]="filterPriority() === 'HIGH'"
+    [class.filter-chip--medium]="filterPriority() === 'MEDIUM'"
+    [class.filter-chip--low]="filterPriority() === 'LOW'">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+    <select class="filter-select"
+      [ngModel]="filterPriority()"
+      (ngModelChange)="filterPriority.set($event)">
+      <option value="ALL">Priorité</option>
+      <option value="HIGH">🔴 Haute</option>
+      <option value="MEDIUM">🟠 Moyenne</option>
+      <option value="LOW">🟢 Basse</option>
+    </select>
+  </div>
+
+  <div class="filter-chip filter-chip--member"
+    [class.filter-chip--member-active]="filterAssigneeId() !== null">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <select class="filter-select"
+      [ngModel]="filterAssigneeId()"
+      (ngModelChange)="filterAssigneeId.set($event ? +$event : null)">
+      <option [ngValue]="null">Membre</option>
+      @for(member of members(); track member.userId) {
+        <option [ngValue]="member.userId">{{ member.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="filter-chip filter-chip--label"
+    [class.filter-chip--label-active]="filterLabelId() !== null">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+    <select class="filter-select"
+      [ngModel]="filterLabelId()"
+      (ngModelChange)="filterLabelId.set($event ? +$event : null)">
+      <option [ngValue]="null">Label</option>
+      @for(label of workspaceLabels(); track label.id) {
+        <option [ngValue]="label.id">{{ label.name }}</option>
+      }
+    </select>
+  </div>
+
+  @if(hasActiveFilters()) {
+    <button class="filter-clear" (click)="clearFilters()">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Effacer
+    </button>
+  }
+  <div class="view-toggle">
+    <button class="view-btn" [class.view-btn--active]="viewMode() === 'kanban'" (click)="viewMode.set('kanban')" title="Vue Kanban">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3"
+                                                                                                                                      width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+
+      Kanban
+    </button>
+    <button class="view-btn" [class.view-btn--active]="viewMode() === 'list'" (click)="viewMode.set('list')" title="Vue Liste">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6"
+                                                                                                                                      x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3"
+                                                                                                                                                                                                                                                                              y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Liste
+    </button>
+    <button class="view-btn" [class.view-btn--active]="viewMode() === 'calendar'" (click)="viewMode.set('calendar')" title="Vue Calendrier">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Calendrier
+    </button>
+  </div>
+
+</div>
+
+<!-- ─── Kanban ─────────────────────────────────────────────── -->
+@if(viewMode() === 'kanban') {
+<div class="kanban-wrapper">
+  <div class="kanban">
+
+    @for(col of columns(); track col.id) {
+    <div
+      class="column"
+      [class.column--dragover]="dragOverColumnId() === col.id"
+      (dragover)="onDragOver(col.id!, $event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop(col.id!, $event)">
+
+      <!-- Entête colonne -->
+      <div class="col-header">
+        <!-- Barre de couleur identifiant la colonne -->
+        <div class="col-accent" [style.background]="getColumnColor(col.id!)"></div>
+
+        @if(editingColumnId() === col.id) {
+        <input
+          class="col-name-input"
+          [ngModel]="editingColumnName()"
+          (ngModelChange)="editingColumnName.set($event)"
+          (blur)="saveRenameColumn(col)"
+          (keydown.enter)="saveRenameColumn(col)"
+          (keydown.escape)="cancelRenameColumn()" />
+        } @else {
+        <span class="col-name" (dblclick)="startRenameColumn(col)">{{ col.name }}</span>
+        <span class="col-count">{{ getColumnTasks(col.id!).length }}</span>
+        }
+
+        <button class="btn-col-delete" (click)="deleteColumn(col.id!)" title="Supprimer la colonne">
+          <svg viewBox="0 0 16 16" fill="currentColor" width="11" height="11">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Corps : cartes tâches -->
+      <div class="col-body">
+        @for(task of getFilteredColumnTasks(col.id!); track task.id) {
+        <div
+          class="task-card"
+          draggable="true"
+          [class.task-card--dragging]="draggedTaskId() === task.id"
+          [class.task-card--done]="isDoneColumn(col.name)"
+          (dragstart)="onDragStart(task.id!, col.id!, $event)"
+          (dragend)="onDragEnd()"
+          (click)="openTaskModal(task)">
+
+          <div class="task-top">
+                <span class="priority-badge priority-{{ task.priority.toLowerCase() }}">
+                  {{ priorityLabel(task.priority) }}
+                </span>
+            <button class="btn-task-delete" (click)="deleteTask(task.id!, col.id!, $event)" title="Supprimer">
+              <svg viewBox="0 0 16 16" fill="currentColor" width="10" height="10">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="task-title">{{ task.title }}</div>
+
+          @if(task.description) {
+          <div class="task-desc">{{ task.description }}</div>
+          }
+
+          @if(task.dueDate) {
+          <div class="task-due" [class.task-due--overdue]="task.dueDate < today()">
+            📅 {{ formatDueDate(task.dueDate) }}
+          </div>
+          }
+
+          <!-- Pied de carte : tags + assigné -->
+          <div class="task-footer">
+            <div class="task-tags">
+              @for(label of (task.labels ?? []); track label.id) {
+                <span class="task-label-badge" [style.background]="label.color">{{ label.name }}</span>
+              }
+            </div>
+            <div class="mini-avatars">
+              @if(task.assigneeId) {
+              <div
+                class="mini-av"
+                [style.background]="getAssigneeColor(task.assigneeId)"
+                [title]="getMemberByAssigneeId(task.assigneeId)?.name ?? 'Inconnu'">
+                {{ getMemberByAssigneeId(task.assigneeId)?.name?.charAt(0)?.toUpperCase() ?? '?' }}
+              </div>
+              }
+            </div>
+          </div>
+
+        </div>
+        }
+
+        <!-- Formulaire ajout tâche -->
+        @if(addingTaskColumnId() === col.id) {
+        <div class="add-task-form" (click)="$event.stopPropagation()">
+          <input
+            class="add-task-input"
+            placeholder="Titre de la tâche…"
+            [ngModel]="newTaskTitle()"
+            (ngModelChange)="newTaskTitle.set($event)"
+            (keydown.enter)="addTask(col.id!)"
+            (keydown.escape)="cancelAddTask()" />
+          <div class="add-task-actions">
+            <button class="btn-add-confirm" (click)="addTask(col.id!)">Ajouter</button>
+            <button class="btn-add-cancel" (click)="cancelAddTask()">Annuler</button>
+          </div>
+        </div>
+        } @else {
+        <button class="btn-add-task" (click)="startAddTask(col.id!)">
+          + Ajouter une tâche
+        </button>
+        }
+      </div>
+
+    </div>
+    }
+
+    <!-- Ajouter une colonne -->
+    @if(showAddColumn()) {
+    <div class="column column--new">
+      <input
+        class="col-name-input"
+        placeholder="Nom de la colonne…"
+        [ngModel]="newColumnName()"
+        (ngModelChange)="newColumnName.set($event)"
+        (keydown.enter)="addColumn()"
+        (keydown.escape)="showAddColumn.set(false)" />
+      <div class="add-task-actions" style="margin-top: 8px;">
+        <button class="btn-add-confirm" (click)="addColumn()">Créer</button>
+        <button class="btn-add-cancel" (click)="showAddColumn.set(false)">Annuler</button>
+      </div>
+    </div>
+    } @else {
+    <button class="btn-add-col" (click)="showAddColumn.set(true)">
+      + Ajouter une colonne
+    </button>
+    }
+
+  </div>
+</div>
+}
+
+<!-- ─── Vue Liste ──────────────────────────────────────────── -->
+@if(viewMode() === 'list') {
+<div class="list-view">
+  <table class="list-table">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Statut</th>
+        <th>Priorité</th>
+        <th>Assigné</th>
+        <th>Échéance</th>
+        <th>Labels</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(row of getAllFilteredTasks(); track row.task.id) {
+        <tr class="list-row" (click)="openTaskModal(row.task)">
+          <td class="list-cell list-cell--title">{{ row.task.title }}</td>
+          <td class="list-cell">
+            <span class="status-chip" [style.background]="getColumnColor(row.colId)">{{ row.colName }}</span>
+          </td>
+          <td class="list-cell">
+            <span class="priority-badge priority-{{ row.task.priority.toLowerCase() }}">{{ priorityLabel(row.task.priority) }}</span>
+          </td>
+          <td class="list-cell">
+            @if(row.task.assigneeId) {
+              <div class="mini-av" [style.background]="getAssigneeColor(row.task.assigneeId)" [title]="getMemberByAssigneeId(row.task.assigneeId)?.name ?? ''">
+                {{ getMemberByAssigneeId(row.task.assigneeId)?.name?.charAt(0)?.toUpperCase() ?? '?' }}
+              </div>
+            } @else {
+              <span class="list-empty">—</span>
+            }
+          </td>
+          <td class="list-cell" [class.list-cell--overdue]="row.task.dueDate != null && row.task.dueDate < today()">
+            {{ row.task.dueDate ? formatDueDate(row.task.dueDate) : '—' }}
+          </td>
+          <td class="list-cell list-cell--labels">
+            @for(label of (row.task.labels ?? []); track label.id) {
+              <span class="task-label-badge" [style.background]="label.color">{{ label.name }}</span>
+            }
+          </td>
+        </tr>
+      }
+      @if(getAllFilteredTasks().length === 0) {
+        <tr><td colspan="6" class="list-empty-row">Aucune tâche</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+}
+
+<!-- ─── Vue Calendrier ────────────────────────────────────── -->
+@if(viewMode() === 'calendar') {
+<div class="calendar-view">
+
+  <!-- Navigation mois -->
+  <div class="calendar-header">
+    <button class="cal-nav-btn" (click)="prevMonth()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="cal-month-label">{{ calendarMonthLabel() }}</span>
+    <button class="cal-nav-btn" (click)="nextMonth()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Jours de la semaine -->
+  <div class="calendar-grid">
+    @for(day of ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']; track day) {
+      <div class="cal-day-header">{{ day }}</div>
+    }
+
+    <!-- Cellules -->
+    @for(cell of getCalendarDays(); track cell.date.toISOString()) {
+      <div class="cal-cell" [class.cal-cell--other-month]="cell.date.getMonth() !== calendarMonth()" [class.cal-cell--today]="cell.date.toISOString().split('T')[0] === today()">
+        <span class="cal-day-num">{{ cell.date.getDate() }}</span>
+        <div class="cal-tasks">
+          @for(task of cell.tasks; track task.id) {
+            <div class="cal-task-chip priority-{{ task.priority.toLowerCase() }}" (click)="openTaskModal(task)" [title]="task.title">
+              {{ task.title }}
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
+}
+
+<!-- Modal Détail Tâche-->
+@if(selectedTask()) {
+<div class="modal-backdrop" (click)="closeTaskModal()">
+  <div class="task-modal" (click)="$event.stopPropagation()">
+
+    <!-- En-tête modal -->
+    <div class="task-modal-header">
+      <!-- Barre de couleur latérale liée à la colonne de la tâche -->
+      <div class="modal-color-bar" [style.background]="selectedTaskColumnColor()"></div>
+
+      <input
+        class="task-modal-title"
+        [ngModel]="modalTitle()"
+        (ngModelChange)="modalTitle.set($event); modalDirty.set(true)"
+        (keydown.enter)="saveTaskModal()"
+        placeholder="Titre de la tâche" />
+
+      <button class="modal-close" (click)="closeTaskModal()">✕</button>
+    </div>
+
+    <div class="task-modal-body">
+
+      <!-- Priorité -->
+      <div class="modal-field">
+        <label class="modal-label">Priorité</label>
+        <div class="priority-selector">
+          @for(p of ['HIGH', 'MEDIUM', 'LOW']; track p) {
+          <button
+            class="priority-btn priority-btn-{{ p.toLowerCase() }}"
+            [class.priority-btn--active]="modalPriority() === p"
+            (click)="modalPriority.set($any(p)); modalDirty.set(true)">
+            {{ priorityLabel(p) }}
+          </button>
+          }
+        </div>
+      </div>
+
+      <!-- Assigné à -->
+      <div class="modal-field">
+        <label class="modal-label">Assigné à</label>
+        <select
+          class="modal-select"
+          [ngModel]="modalAssigneeId()"
+          (ngModelChange)="modalAssigneeId.set($event ? +$event : null); modalDirty.set(true)">
+          <option [ngValue]="null"> Personne </option>
+          @for(member of members(); track member.userId) {
+          <option [ngValue]="member.userId">{{ member.name }}</option>
+          }
+        </select>
+      </div>
+      <!-- Date d'échéance -->
+      <div class="modal-field">
+        <label class="modal-label">Date d'échéance</label>
+        <input
+          type="date"
+          class="modal-select"
+          [ngModel]="modalDueDate()"
+          (ngModelChange)="modalDueDate.set($event); modalDirty.set(true)" />
+      </div>
+
+      <!-- Labels -->
+      <div class="modal-field">
+        <label class="modal-label">Labels</label>
+        <div class="label-badges">
+          @for(label of selectedTask()?.labels ?? []; track label.id) {
+            <span class="label-badge" [style.background]="label.color">{{ label.name }}</span>
+          }
+          @if((selectedTask()?.labels ?? []).length === 0) {
+            <span class="label-empty">Aucun label</span>
+          }
+        </div>
+        <button class="btn-label-picker" (click)="showLabelPicker.set(!showLabelPicker())">+ Gérer les labels</button>
+        @if(showLabelPicker()) {
+          <div class="label-picker">
+            @if(workspaceLabels().length === 0) {
+              <p class="label-picker-empty">Aucun label dans ce workspace.</p>
+            }
+            @for(label of workspaceLabels(); track label.id) {
+              <div class="label-picker-item" (click)="toggleLabel(label)">
+                <span class="label-picker-dot" [style.background]="label.color"></span>
+                <span class="label-picker-name">{{ label.name }}</span>
+                @if(isLabelOnTask(label.id!)) {
+                  <span class="label-picker-check">✓</span>
+                }
+              </div>
+            }
+            <div class="label-create-form">
+              <input type="color" class="label-color-input"
+                [ngModel]="newLabelColor()" (ngModelChange)="newLabelColor.set($event)" />
+              <input type="text" class="label-name-input" placeholder="Nouveau label…"
+                [ngModel]="newLabelName()" (ngModelChange)="newLabelName.set($event)"
+                (keydown.enter)="createLabel()" />
+              <button class="label-create-btn" (click)="createLabel()" [disabled]="!newLabelName().trim()">+</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Description -->
+      <div class="modal-field">
+        <label class="modal-label">Description</label>
+ feature/auth-roles
+
+        <button
+          type="button"
+          class="btn-ai"
+          (click)="generateDescriptionWithAi()"
+          [disabled]="isGeneratingDescription() || !modalTitle().trim()">
+          {{ isGeneratingDescription() ? 'Generating...' : '✨ Generate with AI' }}
+        </button>
+        @if(aiError()) {
+          <p class="ai-error">{{ aiError() }}</p>
+        }
+ develop
+        <textarea
+          class="task-modal-desc"
+          placeholder="Ajouter une description…"
+          rows="4"
+          [ngModel]="modalDesc()"
+          (ngModelChange)="modalDesc.set($event); modalDirty.set(true)">
+          </textarea>
+      </div>
+
+      <!-- Bouton sauvegarder -->
+      <div class="modal-save-row">
+        <button class="btn-save" (click)="saveTaskModal()" [disabled]="!modalTitle().trim()">Enregistrer les modifications</button>
+        @if(modalDirty()) {
+        <button class="btn-discard" (click)="(selectedTask()!)">Annuler</button>
+        }
+      </div>
+
+      <!-- Commentaires -->
+      <div class="modal-field">
+        <label class="modal-label">Commentaires</label>
+
+        <div class="comments-list">
+          @if(taskComments().length === 0) {
+          <p class="no-comments">Aucun commentaire pour l'instant.</p>
+          }
+          @for(comment of taskComments(); track comment.id) {
+          <div class="comment-item">
+            <div class="comment-avatar" [style.background]="getAssigneeColor(comment.authorId)">
+              {{ currentUserInitial }}
+            </div>
+            <div class="comment-content">
+              <p class="comment-text">{{ comment.content }}</p>
+              @if(comment.createdAt) {
+              <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+              }
+            </div>
+            <button class="btn-comment-delete" (click)="deleteComment(comment.id!)">✕</button>
+          </div>
+          }
+        </div>
+
+        <!-- Nouveau commentaire -->
+        <div class="comment-form">
+            <textarea
+              class="comment-input"
+              placeholder="Écrire un commentaire… (Ctrl+Entrée pour envoyer)"
+              rows="2"
+              [ngModel]="newCommentContent()"
+              (ngModelChange)="newCommentContent.set($event)"
+              (keydown.control.enter)="addComment()">
+            </textarea>
+          <button
+            class="btn-comment-send"
+            (click)="addComment()"
+            [disabled]="!newCommentContent().trim()">
+            Envoyer
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+}
